@@ -1,0 +1,16 @@
+Foram feitas 33 até agora.
+34 primeiras tão corretas (exceto as mencionadas)
+
+
+Meyer tá errada
+GulfRADF pode tar errada
+BiggsEXP6 pbbly tá errada
+PenaltyII pbbly tá errada tbm
+
+
+7) é problemático no formato 2
+31) Broyden Banded ainda não foi feita.
+
+19) Osborne 2 é intestável. (e demora muito pqp)
+20) Watson tb
+
