@@ -287,7 +287,7 @@ class MyAbs(Abs):
     
 def GulfRaDF(numero):
     n = 3
-    m = 10
+    m = 4
     t = [i/100 for i in [i+1 for i in range(m)]]
     y = [25+(-50*log(ti))**(2/3) for ti in t]
     fi = [exp((-MyAbs(y[i]-x2)**x3)/x1) - t[i] for i in range(m)]
@@ -476,7 +476,7 @@ def BiggsEXP6(numero):
     n = 6
     m = 13
     t = [0.1*i for i in [i+1 for i in range(m)]]
-    y = [exp(ti) - 5*exp(-10*ti) + 3*exp(-4*ti) for ti in t]
+    y = [exp(-ti) - 5*exp(-10*ti) + 3*exp(-4*ti) for ti in t]
     fi = [x3*exp(-t[i]*x1) - x4*exp(-t[i]*x2) + x6*exp(-t[i]*x5) - y[i] for i in range(m)]
     função = 0
     for f in fi:

@@ -22,9 +22,11 @@ dados.pop(6)
 #cria o negócio que vai ter todas os dados necessários das funções já disponível
 #para todos os métodos acessarem sem precisar calcular toda vez
 
-DATA = [[dado[0](num) for num in range(4)] for dado in dados[25:32]]
-DATA2 = [dado[1] for dado in dados[25:32]]
-DATA3 = [dado[0].__name__ for dado in dados[25:32]]
+dados2 = dados[18:19]
+
+DATA = [[dado[0](num) for num in range(4)] for dado in dados2]
+DATA2 = [dado[1] for dado in dados2]
+DATA3 = [dado[0].__name__ for dado in dados2]
 for i in range(len(DATA)):
     DATA[i].append(DATA2[i])
     DATA[i].append(DATA3[i])
@@ -53,3 +55,10 @@ for dado in DATA:
         print(effer[1])
     else:
         print('\u001b[31m NO!')
+
+
+
+
+
+
+

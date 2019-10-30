@@ -33,6 +33,7 @@ def MétodoDoGradiente(dado):
             k = k+1
         else:
             a = 0.9*a
+            print(a)
         if k >= 5000:
             break
     return [x, f(x),grad(x)]

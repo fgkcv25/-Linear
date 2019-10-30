@@ -29,4 +29,4 @@ def Quadrática(numero):
     else:
         return n
 
-quad = [Quadrática, [1,1]]
+quad = [Quadrática, np.asarray([1,1])]
