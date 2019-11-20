@@ -8,21 +8,48 @@ Created on Wed Nov 13 14:29:13 2019
 #y^ = (AAt)-1 A gradf
 import numpy as np
 
+#def f(x):
+#    return np.log(1+x[0]**2) - x[1]
+#def gradf(x):
+#    return np.asarray([2*x[0]/(1+x[0]**2),-1])
+#
+#def c(x):
+#    c1 = (1+x[0]**2)**2 + x[1]**2 - 4
+#    return np.asarray([c1])
+#def gradc(x):
+#    gradc1 = [2*(1+x[0]**2)*2*x[0], 2*x[1]]
+#    return np.asarray([gradc1])
+#
+#n = 2
+#x = np.zeros(n) + 1
+#y = np.zeros(len(c(x)))
+
+
+
+#def f(x):
+#    return (1-x[0])**2
+#def gradf(x):
+#    return np.asarray([-2*(1-x[0]),0])
+#def c(x):
+#    c1 = 10*(x[1]-x[0]**2)
+#    return np.asarray([c1])
+#def gradc(x):
+#    gradc1 = [-20*x[0], 10]
+#    return np.asarray([gradc1])
+#n = 2
+#m = 1
+#x = np.asarray([-1.2,1])
+#y = np.zeros(len(c(x)))
+
+
+#Problem 4
 def f(x):
-    return np.log(1+x[0]**2) - x[1]
+    return (1/3)*(x[0] + 1)**3 + x[1]
 def gradf(x):
-    return np.asarray([2*x[0]/(1+x[0]**2),-1])
-
+    return np.asarray([(x[0]+1)**2,1])
 def c(x):
-    c1 = (1+x[0]**2)**2 + x[1]**2 - 4
-    return np.asarray([c1])
-def gradc(x):
-    gradc1 = [2*(1+x[0]**2)*2*x[0], 2*x[1]]
-    return np.asarray([gradc1])
+    
 
-n = 2
-x = np.zeros(n) + 1
-y = np.zeros(len(c(x)))
 
 
 from Gradiente_Projetado import GradProj
@@ -41,7 +68,7 @@ def SQP(x,y,f,c,gradf,gradc,n):
         return f(x) + u*sum(abs(c(x)))
     
     while np.dot(gradL(x,y),gradL(x,y)) > 10**(-4):
-        p = GradProj(B,gradf0,A.transpose(),-c0,np.zeros(n))
+        p = GradProj(B,gradf0,A,-c0,np.zeros(n))
         u = max(abs(y)) + 1
         a = 1
         while phi(x + a*p,u) > phi(x,u) + ni*a*(np.dot(gradf0,p) - u*sum(abs(c0))):
@@ -51,8 +78,8 @@ def SQP(x,y,f,c,gradf,gradc,n):
         By1 = gradL(x,y)
         By = By1 - By2
         s = a*p
-        B = B - np.outer(np.dot(B,s),np.dot(B,s))/np.dot(s,np.dot(B,s)) + np.outer(By,By)/np.dot(By,s)
-        
+        if np.linalg.norm(p) > 10**(-4):
+            B = B - np.outer(np.dot(B,s),np.dot(B,s))/np.dot(s,np.dot(B,s)) + np.outer(By,By)/np.dot(By,s)
         ychapeu = -u*c(x)
         py = ychapeu - y
         y = y+a*py
