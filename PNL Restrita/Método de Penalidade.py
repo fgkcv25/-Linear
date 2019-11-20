@@ -7,25 +7,25 @@ Created on Wed Oct 23 13:55:51 2019
 
 import numpy as np
 
-#def f(x):
-#    return (1-x[0])**2
-#def gradf(x):
-#    return np.asarray([-2*(1-x[0]),0])
-#def hessf(x):
-#    return np.asarray([[2*x[0],0],[0,0]])
-#
-#def rest(x):
-#    c1 = 10*(x[1]-x[0]**2)
-#    return np.asarray([c1])
-#def gradrest(x):
-#    gradc1 = [-20*x[0], 10]
-#    return np.asarray([gradc1])
-#def hessrest(x):
-#    hessc1 = np.asarray([[-20,0],[0,0]])
-#    return np.asarray([hessc1])
-#n = 2
-#m = 1
-#x = np.asarray([-1.2,1])
+def f(x):
+    return (1-x[0])**2
+def gradf(x):
+    return np.asarray([-2*(1-x[0]),0])
+def hessf(x):
+    return np.asarray([[2*x[0],0],[0,0]])
+
+def rest(x):
+    c1 = 10*(x[1]-x[0]**2)
+    return np.asarray([c1])
+def gradrest(x):
+    gradc1 = [-20*x[0], 10]
+    return np.asarray([gradc1])
+def hessrest(x):
+    hessc1 = np.asarray([[-20,0],[0,0]])
+    return np.asarray([hessc1])
+n = 2
+m = 1
+x = np.asarray([-1.2,1])
 
 
 #def f(x):
@@ -47,25 +47,25 @@ import numpy as np
 #x = np.asarray([2,1])
 
 
-def f(x):
-    return np.log(1+x[0]**2) - x[1]
-def gradf(x):
-    return np.asarray([2*x[0]/(1+x[0]**2),-1])
-def hessf(x):
-    return np.asarray([[-((2*x[0])**2)*(1/(1+x[0]**2)**2) + 2/(1+x[0]**2),0],[0,0]])
-
-def rest(x):
-    c1 = (1+x[0]**2)**2 + x[1]**2 - 4
-    return np.asarray([c1])
-def gradrest(x):
-    gradc1 = [2*(1+x[0]**2)*2*x[0], 2*x[1]]
-    return np.asarray([gradc1])
-def hessrest(x):
-    hessc1 = np.asarray([[4*(1+x[0]**2) + 4*x[0]*2*x[0],0],[0,2]])
-    return np.asarray([hessc1])
-n = 2
-m = 1
-x = np.asarray([2,2])
+#def f(x):
+#    return np.log(1+x[0]**2) - x[1]
+#def gradf(x):
+#    return np.asarray([2*x[0]/(1+x[0]**2),-1])
+#def hessf(x):
+#    return np.asarray([[-((2*x[0])**2)*(1/(1+x[0]**2)**2) + 2/(1+x[0]**2),0],[0,0]])
+#
+#def rest(x):
+#    c1 = (1+x[0]**2)**2 + x[1]**2 - 4
+#    return np.asarray([c1])
+#def gradrest(x):
+#    gradc1 = [2*(1+x[0]**2)*2*x[0], 2*x[1]]
+#    return np.asarray([gradc1])
+#def hessrest(x):
+#    hessc1 = np.asarray([[4*(1+x[0]**2) + 4*x[0]*2*x[0],0],[0,2]])
+#    return np.asarray([hessc1])
+#n = 2
+#m = 1
+#x = np.asarray([2,2])
 
 
 
