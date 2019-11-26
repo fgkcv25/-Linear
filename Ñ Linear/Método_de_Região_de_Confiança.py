@@ -31,7 +31,7 @@ def MétodoDeRegiãoDeConfiança(dado):
     lambda2 = 1/2
     k = 0
 
-    while np.dot(grad(x),grad(x)) > 10**(-5):
+    while np.dot(grad(x),grad(x)) > 10**(-4):
         s = ms(grad(x),hess(x),delta)
         p = (-1)*(f(x) - f(x+s))/(np.dot(s,grad(x))+(1/2)*(np.dot(s,np.dot(hess(x),s))))
         if p >= mi1:

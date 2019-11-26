@@ -26,20 +26,19 @@ def MétodoDeGradienteConjugado(dado):
     k = 0
     p = -grad(x)
     g = grad(x)
-    a = 1
     c1 = 0.4
-    while np.dot(grad(x),grad(x)) > 10**(-5):
-        if f(x+a*p) <= f(x)+c1*a*np.dot(grad(x),p):
-            g = grad(x)
-            x = x+a*p
-            ga = grad(x)
-            B = np.dot(ga,ga)/np.dot(g,g)
-            p = -ga + B*p
-            a = 1
-            k = k+1
-            if k >= 50:
-                break
-        else:
-            a = 0.9*a
+    while np.dot(grad(x),grad(x)) > 10**(-4):
+        a = 1
+        while f(x+a*p) > f(x)+c1*a*np.dot(grad(x),p):
+            a = 0.5*a
+        g = grad(x)
+        x = x+a*p
+        ga = grad(x)
+        B = np.dot(ga,ga)/np.dot(g,g)
+        p = -ga + B*p
+        a = 1
+        k = k+1
+        if k >= 100:
+            break
 
     return [x, f(x),grad(x)]

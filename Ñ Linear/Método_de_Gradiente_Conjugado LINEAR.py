@@ -7,9 +7,9 @@ Created on Wed Oct 30 15:12:15 2019
 
 import numpy as np
 
-x = np.asarray([10,3])
-A = np.asarray([[1,6],[9,2]])
-b = np.asarray([3,9])
+x = np.asarray([10,3,5])
+A = np.asarray([[1,3,6],[3,2,5],[6,5,7]])
+b = np.asarray([3,9,-10])
 
 def MétodoDoGradienteConjugadoLINEAR(A,x,b):
     r = np.dot(A,x) - b

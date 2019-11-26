@@ -26,14 +26,13 @@ def MétodoDoGradiente(dado):
     a = 1
     p = -grad(x)
     k = 0
-    while np.dot(grad(x),grad(x)) > 10**(-5):
-        if f(x+a*p) <= f(x)+c1*a*np.dot(grad(x),p):
-            x = x+a*p
-            p = -grad(x)
-            k = k+1
-        else:
-            a = 0.9*a
-            print(a)
-        if k >= 5000:
+    while np.dot(grad(x),grad(x)) > 10**(-4):
+        a = 1
+        while f(x+a*p) > f(x)+c1*a*np.dot(grad(x),p):
+            a = 0.5*a
+        x = x+a*p
+        p = -grad(x)
+        k = k+1
+        if k >= 500:
             break
     return [x, f(x),grad(x)]
