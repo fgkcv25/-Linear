@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sun Nov 24 19:25:15 2019
-
 @author: CLIENTE
 """
 
@@ -9,13 +8,15 @@ from Gradiente_Conjugado_Projetado_com_restrições_de_igualdade import GradProj
 import numpy as np
 
 
-G = np.asarray([[0.01,0],[0,1]])
+G = np.asarray([[0.01,0],[0,1]])/2
 d = np.asarray([0,0])
 A = np.asarray([[10,-1],[1,0],[-1,0],[1,0],[-1,0]])
 b = np.asarray([10,2,-50,-50,-50])
 x = np.asarray([3,10])
 E = []
 J = [0,1,2,3,4]
+
+
 
 
 
@@ -30,43 +31,35 @@ def ActiveSet(G,d,A,b,E,J,x):
     bw = np.asarray([b[i] for i in w])
     
     
-    
+
     
     
     k = 0
-    while k < 10:
-        print(Aw)
+    while k < 50:
         
         #computa o p
         if len(Aw) == 0:
-            p = np.linalg.solve(G,G@x+d)
+            p = -np.linalg.solve(G,G@x+d)
         else:
             p = GCP(G,G@x+d,Aw,np.zeros(len(x)),np.zeros(len(x)))
-        
-        
         if np.dot(p,p) < 10**(-4):
-                
             #definir os multiplicadores de lagrange
-            try:
-                ychapeu = np.linalg.lstsq(Aw.T,G@x+d)[0]
-            except:
-                ychapeu = [0 for i in w]
+            ychapeu = np.linalg.lstsq(Aw.T,G@x+d,rcond=-1)[0]
+
             minychapeu = 0
             for i in range(len(w)):
                 if w[i] in J:
                     if ychapeu[i] < minychapeu:
                         minychapeu = ychapeu[i]
                         i0 = i
-            
             #checa se é solução ou continua
-            if minychapeu == 0:
+            if minychapeu >= 0:
                 break
             else:
                 notw.append(w[i0])
                 w.pop(i0)
                 Aw = np.asarray([A[i] for i in w])
                 bw = np.asarray([b[i] for i in w])
-
         else:
             
             #computa o a
@@ -75,11 +68,10 @@ def ActiveSet(G,d,A,b,E,J,x):
                 if np.dot(A[i],p) < 0:
                     listadoa.append((b[i] - np.dot(A[i],x))/np.dot(A[i],p))
             a = min(listadoa)
-            
             x = x+a*p
             
             for i in range(len(notw)):
-                if np.dot(A[notw[i]],x) == b[i]:
+                if abs(np.dot(A[notw[i]],x) - b[notw[i]]) < 10**-4:
                     w.append(notw[i])
                     notw.pop(i)
                     Aw = np.asarray([A[i] for i in w])
@@ -92,15 +84,3 @@ def ActiveSet(G,d,A,b,E,J,x):
             
 
 print(ActiveSet(G,d,A,b,E,J,x))
-            
-            
-            
-
-            
-            
-            
-            
-        
-        
-        
-        
