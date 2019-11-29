@@ -103,17 +103,13 @@ def GradProjCaixa(G,d,l,u,x):
     
     
     
-    
+    p
     
     
     
     
     k = 0
     while k < 200:
-        
-#        if KKT:
-#            break
-        
         t = tlist(x)
         tmin = 0
         for j in range(len(t)):
@@ -136,10 +132,15 @@ def GradProjCaixa(G,d,l,u,x):
                 b.append(l[i])
             if i in CPlu(xc)[2]:
                 b.append(u[i])
+        xold = x.copy()
         x = GCP(G,d,A,b,xc)
-        
+        P = x - xold
+        r = np.dot(G,x) + d
+        if np.dot(P,r) < 10**(-4):
+            break
         k = k+1
         print(x)
+        
     return x 
     
     
