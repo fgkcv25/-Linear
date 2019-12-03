@@ -7,7 +7,7 @@ Created on Sun Nov 24 16:41:19 2019
 
 #y^ = (AAt)-1 A gradf
 import numpy as np
-from Método_de_Restrições_Ativas_usando_penalidade import ActiveSet
+from Método_de_Restrições_Ativas import ActiveSet
 
 #def f(x):
 #    return (x[0] - 2)**2 + x[1]**2
@@ -40,7 +40,7 @@ def c(x):
 def gradc(x):
     gradc1 = [2*(1+x[0]**2)*2*x[0], 2*x[1]]
     return np.asarray([gradc1])
-x = np.zeros(n) + 1
+x = np.zeros(2) + 1
 y = np.zeros(len(c(x)))
 E = [0]
 J = []
@@ -86,15 +86,17 @@ def SQP(x,y,f,c,gradf,gradc,E,J):
     
     k = 0
     while np.dot(gradL(x,y),gradL(x,y)) > 10**(-4):
+        
         (p,ychapeu) = ActiveSet(B,gradf0,A,-c0,E,J,np.zeros(len(x)))
         py = ychapeu-y
-
+        print(ychapeu)
         if 1/u < max(abs(ychapeu)) + 0.5:
             u = 1/(max(abs(ychapeu)) + 1)
-            
+        
         a = 1
         while phi(x + a*p,u) > phi(x,u) + ni*a*(np.dot(gradf0,p) - (1/u)*sum(abs(c0))):
             a = t*a
+        print(a)
         
         xold = x.copy()
         x = x+a*p

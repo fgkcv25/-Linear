@@ -35,6 +35,18 @@ import numpy as np
 #J = [0,1,2]
 
 
+#G = np.asarray([[1., 0.],
+#       [0., 1.]])
+#d = np.asarray([-551.,  550.])
+#A = np.asarray([[ 3. ,  0.5],
+#       [ 1. ,  6. ],
+#       [-1. ,  0. ]])
+#b = np.asarray([-0.5, -9.5, -0. ])
+#x = np.linalg.lstsq(A,b,rcond=-1)[0]
+#E = []
+#J = [0,1,2]
+
+
 #problema minimizar a quadrática com G e d, s.a. Ax >= ou = b
 #com E e J sendo a lista dos índices em que é = e >=, respectivamente
 
@@ -44,7 +56,8 @@ def ActiveSet(G,d,A,b,E,J,x):
     Aw = []
     notw = []
     for i in range(len(b)):
-        if np.dot(A[i],x) == b[i]:
+        if abs(np.dot(A[i],x) - b[i]) < 10**-3:
+            print(np.dot(A[i],x))
             w.append(i)
             Aw.append(A[i])
         else:
@@ -60,11 +73,13 @@ def ActiveSet(G,d,A,b,E,J,x):
         if len(Aw) == 0:
             p = np.linalg.solve(G,-ge)    
         else:
-            p = GCP(G,ge,Aw,np.zeros(len(x)),np.zeros(len(x)))
+            p = GCP(G,ge,Aw,np.zeros(len(Aw)),np.zeros(len(x)))
+
+            
         if np.dot(p,p) < 10**(-4):
             #definir os multiplicadores de lagrange
             try:
-                ychapeu = np.linalg.lstsq(Aw.T,G@x+d,rcond=-1)[0]
+                ychapeu = np.linalg.lstsq(Aw.T,ge,rcond=-1)[0]
             except:
                 pass
 
@@ -82,7 +97,7 @@ def ActiveSet(G,d,A,b,E,J,x):
                 w.pop(i0)
                 Aw = np.asarray([A[i] for i in w])
         
-        else:              
+        else:
             a = 1
             for i in range(len(notw)):
                 if np.dot(A[notw[i]],p) < 0:
@@ -90,7 +105,6 @@ def ActiveSet(G,d,A,b,E,J,x):
                         a = (b[notw[i]] - np.dot(A[notw[i]],x))/np.dot(A[notw[i]],p)
                         i0 = i
             x = x + a*p
-            
             if a < 1:
                 w.append(notw[i0])
                 notw.pop(i0)

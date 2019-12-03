@@ -26,6 +26,15 @@ import numpy as np
 #J = [0,1,2,3,4,5]
 
 
+G = np.asarray([[1,0],[0,1]])
+d = np.asarray([6,0])
+A = np.asarray([[0,-1],[1,0],[0,1]])
+b = np.asarray([0,-1,0])
+x = np.asarray([0,0])
+E = []
+J = [0,1,2]
+
+
 def ActiveSet(G,d,A,b,E,J,x):
     w = E.copy()
     notw = J.copy()
@@ -96,4 +105,4 @@ def ActiveSet(G,d,A,b,E,J,x):
     y = np.linalg.lstsq(A.T,G@x+d,rcond=-1)[0]
     return [x,y]
 
-#print(ActiveSet(G,d,A,b,E,J,x))
+print(ActiveSet(G,d,A,b,E,J,x))
