@@ -8,18 +8,19 @@ import numpy as np
 from Gradiente_Conjugado_Projetado_com_restrições_de_igualdade import GradProj as GCP
 
 
-G = np.asarray([[0.01,0],[0,1]])
-d = np.asarray([0,0])
-x = np.asarray([3,10])
-l = np.asarray([2,-50])
-u = np.asarray([-50,50])
+#G = np.asarray([[0.01,0],[0,1]])
+#d = np.asarray([0,0])
+#x = np.asarray([3,10])
+#l = np.asarray([2,-50])
+#u = np.asarray([-50,50])
 
 
-#G = np.asarray([[9,0,0],[0,1,0],[0,0,9]])
-#d = np.asarray([0,0,0])
-#x = np.asarray([1,1,1])
-#l = np.asarray([-10,1,-10])
-#u = np.asarray([10,10,1])
+G = np.asarray([[9,0,0],[0,1,0],[0,0,9]])
+d = np.asarray([0,0,0])
+x = np.asarray([1,1,1])
+l = np.asarray([-10,1,-10])
+u = np.asarray([10,10,1])
+
 
 
 
@@ -65,7 +66,8 @@ def GradProjCaixa(G,d,l,u,x):
             if g(x)[i] > 0:
                 te.append((x[i]-l[i])/g(x)[i])
             else:
-                te.append(float("inf"))
+                #uso isso ao invés de inf pra multiplicação de zero por ele ser zero
+                te.append(float(1.79769313486e+308))
         t = list(set(te))
         return t
 
@@ -75,7 +77,7 @@ def GradProjCaixa(G,d,l,u,x):
         for i in range(len(x)):
             if g(x)[i] < 0:
                if t[j] < x[i]-u[i]/g(x)[i]:
-                   pe.append(-g[i])
+                   pe.append(-g(x)[i])
                else:
                    pe.append(0)
             elif g(x)[i] > 0:
@@ -97,22 +99,16 @@ def GradProjCaixa(G,d,l,u,x):
         return np.dot(p(x,j),np.dot(G,p(x,j)))
                       
     def deltat(x,j):
-        return -flinha(x,j)/fduaslinhas(x,j)
+        if fduaslinhas(x,j) == 0:
+            return -flinha(x,j)*float(1.79769313486e+308)
+        else:
+            return -flinha(x,j)/fduaslinhas(x,j)
                 
-    
-    
-    
-    
-    p
-    
-    
-    
-    
     k = 0
-    while k < 200:
+    while k < 100:
         t = tlist(x)
         tmin = 0
-        for j in range(len(t)):
+        for j in range(len(t)-1):
             deltatj = deltat(x,j)
             if deltatj >= 0 and deltatj < t[j+1] - t[j]:
                 tmin = t[j] + deltatj
@@ -132,17 +128,15 @@ def GradProjCaixa(G,d,l,u,x):
                 b.append(l[i])
             if i in CPlu(xc)[2]:
                 b.append(u[i])
-        xold = x.copy()
+                
+        x0 = x.copy()
         x = GCP(G,d,A,b,xc)
-        P = x - xold
-        r = np.dot(G,x) + d
-        if np.dot(P,r) < 10**(-4):
+        if np.dot(x-x0,x-x0) < 10**(-4):
             break
-        k = k+1
-        print(x)
         
+        k = k+1
     return x 
     
     
-    
+#print para teste
 print(GradProjCaixa(G,d,l,u,x))    

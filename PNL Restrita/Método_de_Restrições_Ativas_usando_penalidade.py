@@ -4,69 +4,64 @@ Created on Sun Nov 24 19:25:15 2019
 @author: CLIENTE
 """
 
-from Gradiente_Conjugado_Projetado_com_restrições_de_igualdade import GradProj as GCP
+from Método_de_Penalidade import MétododePenalidade as MDP
 import numpy as np
 
 
 #G = np.asarray([[0.01,0],[0,1]])
 #d = np.asarray([0,0])
-#A = np.asarray([[1,0],[-1,0],[0,1],[0,-1]])
-#b = np.asarray([2,-50,-50,-50])
+#A = np.asarray([[10,-1],[1,0],[-1,0],[1,0],[-1,0]])
+#b = np.asarray([10,2,-50,-50,-50])
 #x = np.asarray([3,10])
 #E = []
-#J = [0,1,2,3]
+#J = [0,1,2,3,4]
 
 
 #G = np.asarray([[9,0,0],[0,1,0],[0,0,9]])
-#d = np.asarray([0,4,2])
-#A = np.asarray([[1,7,5],[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]])
-#b = np.asarray([13,-10,-10,1,-10,-10,-1])
+#d = np.asarray([0,0,0])
+#A = np.asarray([[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]])
+#b = np.asarray([-10,-10,1,-10,-10,-1])
 #x = np.asarray([1,1,1])
-#E = [0]
-#J = [1,2,3,4,5,6]
-
-
-#G = np.asarray([[1,0],[0,1]])
-#d = np.asarray([6,0])
-#A = np.asarray([[0,-1],[1,0],[0,1]])
-#b = np.asarray([0,-1,0])
-#x = np.asarray([0,0])
 #E = []
-#J = [0,1,2]
-
-
-#problema minimizar a quadrática com G e d, s.a. Ax >= ou = b
-#com E e J sendo a lista dos índices em que é = e >=, respectivamente
+#J = [0,1,2,3,4,5]
 
 
 def ActiveSet(G,d,A,b,E,J,x):
-    w = []
-    Aw = []
-    notw = []
-    for i in range(len(b)):
-        if np.dot(A[i],x) == b[i]:
-            w.append(i)
-            Aw.append(A[i])
-        else:
-            notw.append(i)
-    if len(Aw) != 0:
-        Aw = np.asarray(Aw)
+    w = E.copy()
+    notw = J.copy()
+    Aw = np.asarray([A[i] for i in w])
+    
+    
 
+    
     
     k = 0
     while k < 1000:
         #computa o p
-        ge = np.dot(G,x) + d
         if len(Aw) == 0:
-            p = np.linalg.solve(G,-ge)    
+            p = -np.linalg.solve(G,G@x+d)    
         else:
-            p = GCP(G,ge,Aw,np.zeros(len(x)),np.zeros(len(x)))
+            def f(p):
+                return np.dot(p,G@p)/2 + np.dot(G@x + d,p)
+            def gradf(p):
+                return np.dot(G,p) + G@x + d
+            def hessf(p):
+                return G
+            def rest(p):    
+                return np.dot(Aw,p)
+            def gradrest(p):
+                return Aw
+            def hessrest(p):
+                aa = np.zeros((len(Aw[0]),len(Aw[0])))
+                hessrest = []
+                for i in Aw:
+                    hessrest.append(aa)
+                return hessrest
+            
+            p = MDP([f,gradf,hessf,rest,gradrest,hessrest,np.zeros(len(x))])
         if np.dot(p,p) < 10**(-4):
             #definir os multiplicadores de lagrange
-            try:
-                ychapeu = np.linalg.lstsq(Aw.T,G@x+d,rcond=-1)[0]
-            except:
-                pass
+            ychapeu = np.linalg.lstsq(Aw.T,G@x+d,rcond=-1)[0]
 
             minychapeu = 0
             for i in range(len(w)):
