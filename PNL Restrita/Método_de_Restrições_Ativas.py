@@ -112,7 +112,6 @@ def ActiveSet(G,d,A,b,E,J,x):
 
 
         k = k+1
-    y = np.linalg.lstsq(A.T,G@x+d,rcond=-1)[0]
-    return [x,y]
+    return x
 
 #print(ActiveSet(G,d,A,b,E,J,x))
